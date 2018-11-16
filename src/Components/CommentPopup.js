@@ -16,7 +16,8 @@ export default class CommentPopup extends Component {
                 e, {
                     type: "SAVE_Comment",
                     data: {
-                        elementId: this.props.elementId,
+                        elementId: this.props.elementInfo.elementId,
+                        elementName: this.props.elementInfo.elementName ,
                         text: this.state.comment,
                         status: "OPEN"
                     }

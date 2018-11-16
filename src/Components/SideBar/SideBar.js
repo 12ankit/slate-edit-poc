@@ -35,7 +35,7 @@ export default class SideBar extends Component {
                         {this.props.comments.map((comment, index) => {
                             if (comment.status !== "UNTOUCHED") {
                                 return <li key={index} elementId={comment.elementId}>
-                                    {comment.elementId}<br />
+                                    {comment.elementName}<br />
                                     {comment.text}<br />
                                     {comment.status}
                                 </li>

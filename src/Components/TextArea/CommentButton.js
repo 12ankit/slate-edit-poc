@@ -6,7 +6,10 @@ export default class CommentButton extends Component {
             e,
             { 
                 type: "SHOW_ADD_COMMENT_BOX",
-                data: this.props.elementId })
+                data: {
+                    elementId : this.props.elementId,
+                    elementName : this.props.elementName
+                }})
     }
     render() {
         return (

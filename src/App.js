@@ -13,16 +13,19 @@ class App extends Component {
       tempSelectedElementId: "",
       comments: [{
         elementId: "textarea0",
+        elementName : "",
         text: "",
         status: "UNTOUCHED"
       },
       {
         elementId: "textarea1",
+        elementName : "",
         text: "",
         status: "UNTOUCHED"
       },
       {
         elementId: "textarea2",
+        elementName : "",
         text: "",
         status: "UNTOUCHED"
       }]
@@ -68,7 +71,7 @@ class App extends Component {
     return (
       <div className="App">
         {this.state.sidebar ? <SideBar comments={this.state.comments} /> : ""}
-        {this.state.commentPopup ? <CommentPopup elementId={this.state.tempSelectedElementId} onClick={this.onClick} /> : ""}
+        {this.state.commentPopup ? <CommentPopup elementInfo={this.state.tempSelectedElementId} onClick={this.onClick} /> : ""}
         <button type="button" style={{ display: "inline", float: "left" }} onClick={() => { this.setState({ sidebar: !this.state.sidebar }) }}>
           Nav
         </button>
