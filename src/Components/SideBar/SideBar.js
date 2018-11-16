@@ -1,28 +1,32 @@
 import React, { Component } from 'react'
+import Comments from './Comments.js'
 
 export default class SideBar extends Component {
     constructor(props) {
         super(props)
         this.state = {
             search: "",
-            select: ""
+            selectStatusAction: ""
         }
     }
     onChange = (e) => {
-        if (e.target.type === "search") {
-            this.setState({ search: e.target.value })
-        } else {
-            this.setState({ select: e.target.value })
+        switch(e.target.id){
+            case "searchInput" :
+                this.setState({ search: e.target.value })
+                break
+            case "statusSelect" :
+                this.setState({ selectStatusAction: e.target.value })
+                break
         }
     }
     render() {
         return (
             <aside className="sidebar">
-                <input type='search' name='searchComments' value={this.state.search} onChange={this.onChange} />
+                <input id="searchInput" type='search' name='searchComments' value={this.state.search} onChange={this.onChange} />
                 <nav>
                     <ul>
                         <li>
-                            <select value={this.state.select} onChange={this.onChange}>
+                            <select id="statusSelect" value={this.state.select} onChange={this.onChange}>
                                 <option value="all">All</option>
                                 <option value="open">Open</option>
                                 <option value="resolved">resolved</option>
@@ -30,19 +34,7 @@ export default class SideBar extends Component {
                         </li>
                     </ul>
                 </nav>
-                <div className="comments">
-                    <ul>
-                        {this.props.comments.map((comment, index) => {
-                            if (comment.status !== "UNTOUCHED") {
-                                return <li key={index} elementId={comment.elementId}>
-                                    {comment.elementName}<br />
-                                    {comment.text}<br />
-                                    {comment.status}
-                                </li>
-                            }
-                        })}
-                    </ul>
-                </div>
+                <Comments commentActionHandler={this.props.commentActionHandler} searchedComment={this.state.search} comments={this.props.comments}/>
             </aside>
         )
     }

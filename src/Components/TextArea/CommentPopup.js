@@ -19,7 +19,8 @@ export default class CommentPopup extends Component {
                         elementId: this.props.elementInfo.elementId,
                         elementName: this.props.elementInfo.elementName ,
                         text: this.state.comment,
-                        status: "OPEN"
+                        status: "OPEN",
+                        response: ""
                     }
                 })
         } else {
@@ -28,8 +29,8 @@ export default class CommentPopup extends Component {
     }
     render() {
         return (
-            <div className="comment-popup" style={{ display: "inline", position: "fixed", margin: "350px 0px 0px 0px" }}>
-                <textarea value={this.state.comment} onChange={this.onChange} rows="5" cols="80" />
+            <div className="comment-popup" style={{ display: "inline", position: "fixed", margin: "350px 0px 0px -300px" }}>
+                <textarea value={this.state.comment} onChange={this.onChange} rows="5" cols="80" placeholder="Enter Your Comment"/>
                 <br />
                 <button id="save" onClick={this.onClick}>Save</button>
                 <button id="cancel" onClick={this.onClick}>Cancel</button>
