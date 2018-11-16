@@ -30,3 +30,28 @@
     transform: rotate(360deg);
   }
 }
+
+.element{
+  display: inline-block;
+}
+.elements-right-sidebar {
+  float: right;
+}
+
+.flag {
+  transform: translateY(2px);
+  width: 20px;
+  height: 20px;
+}
+.element-icon {
+  transform: translateY(-8px)
+}
+.comment-button{
+  transform: translateY(-6px);
+  width: 20px;
+  height: 20px;
+}
+.sidebar{
+  float: left;
+  width: 25%;
+}
