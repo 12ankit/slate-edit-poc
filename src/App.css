@@ -1,6 +1,10 @@
 .App {
   text-align: center;
+  background-color: seashell;
   z-index: 0;
+  -webkit-transition: width 1s ease-in-out;
+  transition: all 1s ease-in-out;
+  position: relative;
 }
 
 .App-logo {
@@ -9,7 +13,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #c5c6c9;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -51,6 +55,13 @@
   transform: translateY(-6px);
   width: 20px;
   height: 20px;
+  background-color: #0ca4eb;
+  border: 0px;
+  color: aliceblue
+}
+.comment-button img{
+  transform: translateY(-3px);
+  filter: invert(100%)
 }
 .comment-popup{ 
   display: "inline";
@@ -60,5 +71,15 @@
 }
 .sidebar{
   float: left;
+  z-index: 1;
   width: 25%;
+  -webkit-transition: width 1s ease-in-out;
+  animation: ease-in-out 1s ease;
+  transition: visibility 0s, opacity 0.5s linear;
+}
+button {
+  border: 0px;
+  background-color: #0ca4eb;
+  color: aliceblue;
+  padding: 5px
 }

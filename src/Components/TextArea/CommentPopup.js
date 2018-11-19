@@ -1,6 +1,7 @@
 import React, { Component } from "react"
+import {connect} from 'react-redux'
 
-export default class CommentPopup extends Component {
+class CommentPopup extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -11,30 +12,31 @@ export default class CommentPopup extends Component {
         this.setState({ comment: e.target.value })
     }
     onClick = (e) => {
-        if (e.target.id === "save") {
-            this.props.onClick(
-                e, {
+        if (e.target.className === "save") {
+            this.props.dispatch(
+                {
                     type: "SAVE_Comment",
                     data: {
                         elementId: this.props.elementInfo.elementId,
                         elementName: this.props.elementInfo.elementName ,
                         text: this.state.comment,
                         status: "OPEN",
-                        response: ""
+                        responseAction: "",
+                        response:""
                     }
                 })
         } else {
-            this.props.onClick(e, { type: "CANCEL_COMMENT" })
+            this.props.dispatch({ type: "CANCEL_COMMENT" })
         }
     }
     render() {
         return (
-            <div className="comment-popup" style={{ display: "inline", position: "fixed", margin: "350px 0px 0px -300px" }}>
+            <div className="comment-popup" style={{ display: this.props.display ? "inline" : "none", position: "fixed", margin: "350px 0px 0px -300px"}}>
                 <textarea value={this.state.comment} onChange={this.onChange} rows="5" cols="80" placeholder="Enter Your Comment"/>
                 <br />
-                <button id="save" onClick={this.onClick}>Save</button>
-                <button id="cancel" onClick={this.onClick}>Cancel</button>
+                <button className="save" onClick={this.onClick}>Save</button>{" "}
+                <button className="cancel" onClick={this.onClick}>Cancel</button>
             </div>
         )
     }
-}
+}export default connect()(CommentPopup)

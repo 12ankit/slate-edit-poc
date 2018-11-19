@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
+import {connect} from 'react-redux'
 
-export default class CommentButton extends Component {
-    onClick = (e) => {
-        this.props.onClick(
-            e,
+class CommentButton extends Component {
+    onClick = () => {
+        this.props.dispatch(
             { 
                 type: "SHOW_ADD_COMMENT_BOX",
                 data: {
@@ -13,12 +13,14 @@ export default class CommentButton extends Component {
     }
     render() {
         return (
-            <div className="comment-button">
+            <div>
                 <button type='button' className='comment-button' onClick={this.onClick}>
                     <img src="https://cdn2.iconfinder.com/data/icons/business-and-internet/512/Note-512.png"
-                        alt='add comment' width='10px' height='10px' />
+                        alt='add comment' width='15px' height='15px' />
                 </button>
             </div>
         )
     }
 }
+
+export default connect()(CommentButton)

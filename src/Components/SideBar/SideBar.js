@@ -6,7 +6,7 @@ export default class SideBar extends Component {
         super(props)
         this.state = {
             search: "",
-            selectStatusAction: ""
+            selectStatusAction: "ALL"
         }
     }
     onChange = (e) => {
@@ -16,25 +16,27 @@ export default class SideBar extends Component {
                 break
             case "statusSelect" :
                 this.setState({ selectStatusAction: e.target.value })
+                this.props.dispatch({type:"FILTER_BY_STATUS",data: e.target.value})
                 break
         }
+
     }
     render() {
         return (
-            <aside className="sidebar">
+            <aside className="sidebar" style={{display : this.props.display ? "inline-block" : "none"}}>
                 <input id="searchInput" type='search' name='searchComments' value={this.state.search} onChange={this.onChange} />
                 <nav>
                     <ul>
                         <li>
                             <select id="statusSelect" value={this.state.select} onChange={this.onChange}>
-                                <option value="all">All</option>
-                                <option value="open">Open</option>
-                                <option value="resolved">resolved</option>
+                                <option value="ALL">All</option>
+                                <option value="OPEN">Open</option>
+                                <option value="RESOLVE">Resolved</option>
                             </select>
                         </li>
                     </ul>
                 </nav>
-                <Comments commentActionHandler={this.props.commentActionHandler} searchedComment={this.state.search} comments={this.props.comments}/>
+                <Comments filter={this.state.selectStatusAction} searchedComment={this.state.search} comments={this.props.comments}/>
             </aside>
         )
     }
