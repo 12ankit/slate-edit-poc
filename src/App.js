@@ -29,6 +29,10 @@ class App extends Component {
           <br />
           <TextArea elementName="TextArea" elementId='textarea2' flagStatus={this.findElement("textarea2").status}/>
           <br />
+          <TextArea elementName="TextArea" elementId='textarea3' flagStatus={this.findElement("textarea2").status}/>
+          <br />
+          <TextArea elementName="TextArea" elementId='textarea4' flagStatus={this.findElement("textarea2").status}/>
+          <br />
         </div>
       </div>
     );

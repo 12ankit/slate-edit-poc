@@ -28,7 +28,23 @@ var defaultStore = {
         status: "UNTOUCHED",
         responseAction: "",
         response: ""
-    }],
+    },
+    {
+        elementId: "textarea3",
+        elementName: "",
+        text: "",
+        status: "UNTOUCHED",
+        responseAction: "",
+        response: ""
+    },
+    {
+        elementId: "textarea4",
+        elementName: "",
+        text: "",
+        status: "UNTOUCHED",
+        responseAction: "",
+        response: ""
+    }]
 }
 
 function comment(state = defaultStore, action) {
