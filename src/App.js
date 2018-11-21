@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import './App.css';
 import TextArea from './Components/TextArea/TextArea.js'
 import SideBar from './Components/SideBar/SideBar.js'
-import CommentPopup from './Components/TextArea/CommentPopup.js'
+import CommentPopup from './Components/CommentPopup.js'
 
 class App extends Component {
   findElement = (elementId) => {

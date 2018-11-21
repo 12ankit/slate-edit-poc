@@ -1,52 +1,5 @@
 import { createStore } from 'redux'
 
-// var defaultStore = {
-//     sidebar: false,
-//     commentPopup: false,
-//     tempSelectedElementId: "",
-//     fileteredComments:[],
-//     comments: [{
-//         elementId: "textarea0",
-//         elementName: "",
-//         text: "",
-//         status: "UNTOUCHED",
-//         responseAction: "",
-//         response: ""
-//     },
-//     {
-//         elementId: "textarea1",
-//         elementName: "",
-//         text: "",
-//         status: "UNTOUCHED",
-//         responseAction: "",
-//         response: ""
-//     },
-//     {
-//         elementId: "textarea2",
-//         elementName: "",
-//         text: "",
-//         status: "UNTOUCHED",
-//         responseAction: "",
-//         response: ""
-//     },
-//     {
-//         elementId: "textarea3",
-//         elementName: "",
-//         text: "",
-//         status: "UNTOUCHED",
-//         responseAction: "",
-//         response: ""
-//     },
-//     {
-//         elementId: "textarea4",
-//         elementName: "",
-//         text: "",
-//         status: "UNTOUCHED",
-//         responseAction: "",
-//         response: ""
-//     }]
-// }
-
 var defaultStore = {
     sidebar: false,
     commentPopup: false,
@@ -54,34 +7,6 @@ var defaultStore = {
     filteredComments: [],
     elements: [{
         elementId: "textarea0",
-        elementName: "",
-        comments: [
-            // {
-            //     commentId : "",
-            //     status: "UNTOUCHED",
-            //     timeSign: "",
-            //     text: "",
-            //     replys: [],
-            // }
-        ],
-    },
-    {
-        elementId: "textarea1",
-        elementName: "",
-        comments: []
-    },
-    {
-        elementId: "textarea2",
-        elementName: "",
-        comments: []
-    },
-    {
-        elementId: "textarea3",
-        elementName: "",
-        comments: []
-    },
-    {
-        elementId: "textarea4",
         elementName: "",
         comments: []
     }]
