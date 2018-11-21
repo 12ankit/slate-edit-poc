@@ -8,6 +8,26 @@ var defaultStore = {
     elements: [{
         elementId: "textarea0",
         elementName: "",
+        comments: [],
+    },
+    {
+        elementId: "textarea1",
+        elementName: "",
+        comments: []
+    },
+    {
+        elementId: "textarea2",
+        elementName: "",
+        comments: []
+    },
+    {
+        elementId: "textarea3",
+        elementName: "",
+        comments: []
+    },
+    {
+        elementId: "textarea4",
+        elementName: "",
         comments: []
     }]
 }
@@ -57,7 +77,7 @@ function comment(state = defaultStore, action) {
                 ...state,
                 elements: elements,
                 commentPopup: !state.commentPopup,
-                sidebar : false
+                sidebar: false
             }
         case "CANCEL_COMMENT":
             return {
@@ -65,9 +85,9 @@ function comment(state = defaultStore, action) {
                 commentPopup: !state.commentPopup
             }
         case "ACTION_ON_COMMENT":
-            return commentAction(state,action,elements,filteredComments)
+            return commentAction(state, action, elements, filteredComments)
         case "FILTER_BY_STATUS":
-            filteredComments=[]
+            filteredComments = []
             index = elements.findIndex((element) => (element.elementId === action.data.elementId))
             comments = elements[index].comments
             if (action.data.status === "ALL") {
@@ -94,7 +114,7 @@ function comment(state = defaultStore, action) {
     }
 }
 
-function commentAction(state, action, elements,filteredComments ) {
+function commentAction(state, action, elements, filteredComments) {
     let fileteredIndex = filteredComments.findIndex((comment) => (comment.commentId === action.data.commentId))
     let index = elements.findIndex((element) => (element.elementId === action.data.elementId))
     let comments = elements[index].comments
@@ -107,7 +127,7 @@ function commentAction(state, action, elements,filteredComments ) {
                 elements: elements,
                 filteredComments: filteredComments
             }
-        case "EDIT":            
+        case "EDIT":
             comments[commentIndex].text = action.data.text
             comments[commentIndex].status = "OPEN"
             return {
@@ -131,7 +151,7 @@ function commentAction(state, action, elements,filteredComments ) {
                 elements: elements,
                 filteredComments: filteredComments
             }
-        default :
+        default:
             return {
                 ...state,
                 elements: elements,
