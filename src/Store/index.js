@@ -103,6 +103,7 @@ function comment(state = defaultStore, action) {
             elements[index].comments.push({
                 commentId: "comment#" + elements[index].comments.length,
                 status: "OPEN",
+                responseAction: "ACTION",
                 timeSign: new Date(),
                 text: action.data.commentText,
                 replys: []
@@ -154,16 +155,43 @@ function commentAction(state, action, elements, filteredComments) {
     let comments = elements[index].comments
     let commentIndex = comments.findIndex((comment) => (comment.commentId === action.data.commentId))
     switch (action.data.responseAction) {
-        case "REPLY":
+        case "REPLYED":
+            comments[commentIndex].responseAction = "ACTION"
             comments[commentIndex].replys.push(action.data.text)
             return {
                 ...state,
                 elements: elements,
                 filteredComments: filteredComments
             }
-        case "EDIT":
+        case "EDITED":
             comments[commentIndex].text = action.data.text
             comments[commentIndex].status = "OPEN"
+            comments[commentIndex].responseAction = "ACTION"
+            return {
+                ...state,
+                elements: elements,
+                filteredComments: filteredComments
+            }
+        case "CANCELED":
+            comments[commentIndex].responseAction = "ACTION"
+            return {
+                ...state,
+                elements: elements,
+                filteredComments: filteredComments
+            }
+
+        case "REPLY":
+            comments[commentIndex].responseAction = "REPLY"
+            // comments[commentIndex].replys.push(action.data.text)
+            return {
+                ...state,
+                elements: elements,
+                filteredComments: filteredComments
+            }
+        case "EDIT":
+            // comments[commentIndex].text = action.data.text
+            // comments[commentIndex].status = "OPEN"
+            comments[commentIndex].responseAction = "EDIT"
             return {
                 ...state,
                 elements: elements,
@@ -171,6 +199,7 @@ function commentAction(state, action, elements, filteredComments) {
             }
         case "RESOLVE":
             comments[commentIndex].status = "RESOLVED"
+            comments[commentIndex].responseAction = "ACTION"
             filteredComments[fileteredIndex].status = "RESOLVED"
             return {
                 ...state,

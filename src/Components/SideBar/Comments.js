@@ -10,7 +10,7 @@ class Comments extends Component {
         }
     }
 
-    onClick = (e, comment, response) => {
+    onClick = (e, comment, response,responseAction) => {
         if (e.target.className === "save") {
             // if (!window.confirm()) {
             //     return null
@@ -22,27 +22,30 @@ class Comments extends Component {
                         elementId: this.props.elementId,
                         commentId: comment.commentId,
                         text: response,
-                        responseAction: this.state.responseAction
+                        responseAction: responseAction
                     }
                 })
         }
-        this.setState({ responseAction: "ACTION" })
+        this.props.dispatch({
+            type: "ACTION_ON_COMMENT",
+            data: {
+                elementId: this.props.elementId,
+                commentId: comment.commentId,
+                responseAction: "CANCELED"
+            }
+        })
     }
 
     onChange = (e) => {
-        let responseAction = e.target.value
-        if (responseAction === "RESOLVE" || responseAction === "DELETE") {
-            this.props.dispatch({
-                type: "ACTION_ON_COMMENT",
-                data: {
-                    elementId: this.props.elementId,
-                    commentId: e.target.id,
-                    responseAction: e.target.value
-                }
-            })
-        } else {
-            this.setState({ responseAction: responseAction })
-        }
+        this.setState({ responseAction: e.target.value })
+        this.props.dispatch({
+            type: "ACTION_ON_COMMENT",
+            data: {
+                elementId: this.props.elementId,
+                commentId: e.target.id,
+                responseAction: e.target.value
+            }
+        })
     }
 
     render() {
@@ -55,6 +58,7 @@ class Comments extends Component {
         return (<div className="comments">
             {filteredComments.map((comment, index) => {
                 if (comment.text.search(this.props.searchedComment) !== -1) {
+                    console.log(comment.commentId)
                     return (<div className="comment" key={index} id={"comment" + index}>
                         <header className="comment-header">
                             <img src="https://cdn1.iconfinder.com/data/icons/mix-color-4/502/Untitled-1-512.png" alt="user" width="60px" height="60px" style={{ float: "left" }} />
@@ -72,7 +76,7 @@ class Comments extends Component {
                         <table>
                             <tbody>
                                 <tr><td> {
-                                    this.state.responseAction === "EDIT" ? <CommentResponse elementId={this.props.elementId}
+                                    comment.responseAction === "EDIT" ? <CommentResponse elementId={this.props.elementId}
                                         commentText={comment.text} comment={comment}
                                         dispatch={this.props.dispatch}
                                         onClick={this.onClick} /> : comment.text}</td></tr>
@@ -86,7 +90,7 @@ class Comments extends Component {
                                 <p>{reply}</p>
                             </div>
                         })}
-                        {this.state.responseAction === "REPLY" ? <CommentResponse elementId={this.props.elementId} commentText={null} comment={comment} dispatch={this.props.dispatch} onClick={this.onClick} /> : null}
+                        {comment.responseAction === "REPLY" ? <CommentResponse elementId={this.props.elementId} commentText={null} comment={comment} dispatch={this.props.dispatch} onClick={this.onClick} /> : null}
                     </div>)
                 }
                 return null

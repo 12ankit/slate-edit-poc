@@ -10,7 +10,9 @@ class CommentResponse extends Component {
     onClick = (e) =>{
         let comment = this.props.comment
         let response = this.state.textarea
-        this.props.onClick(e,comment,response)}
+        let responseAction = comment.responseAction === "EDIT" ? "EDITED" : "REPLYED"
+        this.props.onClick(e,comment,response, responseAction)
+    }
     onChange = (e) => {
         this.setState({ textarea: e.target.value })
     }
