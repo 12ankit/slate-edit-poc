@@ -1,78 +1,100 @@
 import React, { Component } from 'react'
 import CommentResponse from "./CommentResponse.js"
-import {connect} from 'react-redux'
 
 class Comments extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            
+            select: "ACTION",
+            responseAction: "ACTION",
         }
     }
 
-    onClick = (e) => {
-        if(window.confirm()){
-            return null
+    onClick = (e, comment, response) => {
+        if (e.target.className === "save") {
+            // if (!window.confirm()) {
+            //     return null
+            // }
+            this.props.dispatch(
+                {
+                    type: "ACTION_ON_COMMENT",
+                    data: {
+                        elementId: this.props.elementId,
+                        commentId: comment.commentId,
+                        text: response,
+                        responseAction: this.state.responseAction
+                    }
+                })
         }
-        this.onChange(e)
+        this.setState({ responseAction: "ACTION" })
     }
 
     onChange = (e) => {
-        this.setState({ [e.target.id+"-Select"]: e.target.value })
-        this.props.dispatch({
-            type:"ACTION_ON_COMMENT",
-            data:{
-                elementId:e.target.id,
-                responseAction:e.target.value
-            }
-        })
-    }
-
-    createLi = (comment) => {
-        return <li key={comment.elementId} id={comment.elementId}>
-                        {comment.elementName}<br />
-                        {comment.text}<br />
-                        {comment.status}<br/>
-                        {comment.response !== "" ? "Reply : "+comment.response :""}
-                        <div className="sidebar-comment-buttons">
-                            <select id={comment.elementId} value={this.state[comment.elementId+"-Select"]} onChange={this.onChange} onSelect={this.onClick}>
-                                <option value="">Action</option>
-                                <option value="REPLY">Reply</option>
-                                <option value="RESOLVE">Resolve</option>
-                                <option value="EDIT">Edit</option>
-                                <option value="DELETE">Delete</option>
-                            </select>
-                        </div>
-                        {comment.responseAction ==="EDIT" || comment.responseAction === "REPLY" ? <CommentResponse comment={comment} dispatch={this.props.dispatch} /> : null}
-                    </li>
+        let responseAction = e.target.value
+        if (responseAction === "RESOLVE" || responseAction === "DELETE") {
+            this.props.dispatch({
+                type: "ACTION_ON_COMMENT",
+                data: {
+                    elementId: this.props.elementId,
+                    commentId: e.target.id,
+                    responseAction: e.target.value
+                }
+            })
+        } else {
+            this.setState({ responseAction: responseAction })
+        }
     }
 
     render() {
-        let comments 
-        if(this.props.filter === "ALL"){
-            comments = <ul>
-            {this.props.comments.map((comment, index) => {
-                if (comment.status !== "UNTOUCHED" && comment.text.search(this.props.searchedComment)!=-1) {
-                    return this.createLi(comment)
-                }
-            })}
-        </ul>
+        let filteredComments = this.props.filteredComments
+        if (this.props.sort === "NEWESTFIRST") {
+            filteredComments.sort((a, b) => { return b.timeSign.getTime() - a.timeSign.getTime() })
+        } else {
+            filteredComments.sort((a, b) => { return a.timeSign.getTime() - b.timeSign.getTime() })
         }
-        else {
-            comments = <ul>
-            {this.props.fileteredComments.map((comment, index) => {
-                if (comment.status !== "UNTOUCHED" && comment.text.search(this.props.searchedComment)!=-1) {
-                    return this.createLi(comment)
+        return (<div className="comments">
+            {filteredComments.map((comment, index) => {
+                if (comment.text.search(this.props.searchedComment) !== -1) {
+                    return (<div className="comment" key={index} id={"comment" + index}>
+                        <header className="comment-header">
+                            <img src="https://cdn1.iconfinder.com/data/icons/mix-color-4/502/Untitled-1-512.png" alt="user" width="60px" height="60px" style={{ float: "left" }} />
+                            <p className="date"><span style={{ fontWeight: "bold", fontSize: "14px" }}>c5c5</span><br />{comment.timeSign.toString()}</p>
+                            <div className="sidebar-comment-buttons">
+                                <select className="comment-select" id={comment.commentId} value={this.state.select} onChange={this.onChange}>
+                                    <option value="ACTION">Action</option>
+                                    <option value="REPLY">Reply</option>
+                                    <option value="RESOLVE">Resolve</option>
+                                    <option value="EDIT">Edit</option>
+                                    <option value="DELETE">Delete</option>
+                                </select>
+                            </div>
+                        </header><hr />
+                        <table>
+                            <tbody>
+                                <tr><td> {
+                                    this.state.responseAction === "EDIT" ? <CommentResponse elementId={this.props.elementId}
+                                        commentText={comment.text} comment={comment}
+                                        dispatch={this.props.dispatch}
+                                        onClick={this.onClick} /> : comment.text}</td></tr>
+                                <tr><td><b>Status : </b></td><td> {comment.status}</td></tr>
+                                <tr><td><b>Replys : </b></td><td> {comment.replys.length}</td></tr>
+                            </tbody>
+                        </table>
+                        {comment.replys.map((reply, index) => {
+                            return <div className="replys">
+                                <h1>Reply #{index} :</h1>
+                                <p>{reply}</p>
+                            </div>
+                        })}
+                        {this.state.responseAction === "REPLY" ? <CommentResponse elementId={this.props.elementId} commentText={null} comment={comment} dispatch={this.props.dispatch} onClick={this.onClick} /> : null}
+                    </div>)
                 }
+                return null
             })}
-        </ul>
-        }
-        return (
-            <div className="comments">
-                {comments}
-            </div>
-        )
+            <br />
+            <br />
+        </div>)
     }
 }
 
-export default connect(state => ({fileteredComments : state.fileteredComments}))(Comments)
+export default Comments

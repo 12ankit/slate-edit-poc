@@ -1,10 +1,5 @@
 .App {
-  text-align: center;
   background-color: seashell;
-  z-index: 0;
-  -webkit-transition: width 1s ease-in-out;
-  transition: all 1s ease-in-out;
-  position: relative;
 }
 
 .App-logo {
@@ -35,7 +30,9 @@
     transform: rotate(360deg);
   }
 }
-
+textarea{
+  resize: none;
+}
 .element{
   display: inline-block;
 }
@@ -51,6 +48,13 @@
 .element-icon {
   transform: translateY(-8px)
 }
+.comment-popup{
+  color:"white";
+  background:"gray"; 
+  position: "fixed";
+  padding:"10px";
+  margin: 50%;
+}
 .comment-button{
   transform: translateY(-6px);
   width: 20px;
@@ -63,23 +67,118 @@
   transform: translateY(-3px);
   filter: invert(100%)
 }
-.comment-popup{ 
-  display: "inline";
-  z-index: 1;
-  position: "fixed";
-  margin-left: "350px 0px 0px 0px"
-}
 .sidebar{
+  position: fixed;
   float: left;
   z-index: 1;
-  width: 25%;
   -webkit-transition: width 1s ease-in-out;
   animation: ease-in-out 1s ease;
-  transition: visibility 0s, opacity 0.5s linear;
+  transition:  0s, opacity 0.5s linear;
+}
+.sidebar aside{
+  display: inline-block;
+  width: 94.3%;
+  height: 800px;
+  background-color: whitesmoke;
 }
 button {
   border: 0px;
   background-color: #0ca4eb;
   color: aliceblue;
   padding: 5px
+}
+.comment{
+  border-top: 1px solid darkgray;
+  margin-left: 5%;
+  margin-bottom: 2%;
+  width: 90%;
+  background-color: whitesmoke;
+}
+.comment img {
+  transform: translateY(5px)
+}
+.comment-header{
+  display: inline-block;
+}
+.sidebar-comment-buttons{
+  display: inline-block;
+  width: 20px;
+  float: right;
+}
+.siderbar-inputs{
+  margin-left: 10%
+}
+.comment-select {
+  width: 20px
+}
+.date{
+  width: 50%;
+  display: inline-block;
+  font-size: 9px;
+  margin-left: 3%;
+}
+.commentResponse{
+  margin-left: 6%;
+}
+.pCaptions{
+  display: inline;
+  font-weight: bold;
+}
+.searchBar{
+  display: inline;
+}
+.searchBar img{
+  padding: 2px;
+  background-color: white;
+  margin-left: 4px;
+  width: 14px;
+  height: 14px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  transform: translateY(5px);
+}
+.searchBar input{
+  width: 80%;
+  height: 100%;
+  border: 0px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.replys {
+  margin-left: 4%;
+  margin-bottom: 1%;
+  background:gray;
+  width: 90%;
+  padding: 0;
+  padding-bottom: 10px;
+}
+.replys p {
+  background: white;
+  width: 70%;
+  margin-left: 10%;
+}
+.replys h1 {
+  margin: 0;
+  padding: 0;
+  margin-left: 2%;
+  font-size: 12px;
+  font-weight: bold;
+  display: inline;
+}
+.example-enter {
+  opacity: 0.01;
+}
+
+.example-enter.example-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.example-leave {
+  opacity: 1;
+}
+
+.example-leave.example-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
 }

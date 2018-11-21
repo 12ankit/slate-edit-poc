@@ -7,57 +7,22 @@ class CommentResponse extends Component {
             textarea: ""
         }
     }
+    onClick = (e) =>{
+        let comment = this.props.comment
+        let response = this.state.textarea
+        this.props.onClick(e,comment,response)}
     onChange = (e) => {
         this.setState({ textarea: e.target.value })
     }
-    onClick = (e) => {
-        let response = this.props.comment.responseAction
-        switch (response) {
-            case "EDIT":
-                if (e.target.className === "save") {
-                    this.props.dispatch(
-                        {
-                            type: "EDIT_COMMENT",
-                            data: {
-                                elementId: this.props.comment.elementId,
-                                text: this.state.textarea,
-                                responseAction: "NONE",
-                                response: "EDITED"
-                            }
-                        })
-                }
-                break
-            case "REPLY":
-                if (e.target.className === "save") {
-                    this.props.dispatch(
-                        {
-                            type: "EDIT_COMMENT",
-                            data: {
-                                ...this.props.comment,
-                                elementId: this.props.comment.elementId,
-                                responseAction: "NONE",
-                                response: this.state.textarea
-                            }
-                        })
-                }
-                break
-            default:
-                this.props.dispatch(
-                    {
-                        type: "EDIT_COMMENT",
-                        data: {
-                            ...this.props.comment,
-                            responseAction: "NONE"
-                        }
-                    })
-        }
-    }
     render() {
+        let commentText = this.props.commentText !== null ? this.props.commentText : false
         return (
             <div className="commentResponse">
-                <textarea value={this.state.comment} onChange={this.onChange} rows="5" cols="50" placeholder="Enter Comment" />
+                <textarea value={this.state.comment} onChange={this.onChange} rows="5" cols="35" placeholder="Enter Comment" >
+                {commentText ? commentText : ""}
+                </textarea>
                 <br />
-                <button className="save" onClick={this.onClick}>Save</button>
+                <button className="save" onClick={this.onClick}>Save</button>{" "}
                 <button className="cancel" onClick={this.onClick}>Cancel</button>
             </div>
         )

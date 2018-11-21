@@ -5,33 +5,36 @@ import TextArea from './Components/TextArea/TextArea.js'
 import SideBar from './Components/SideBar/SideBar.js'
 import CommentPopup from './Components/TextArea/CommentPopup.js'
 
-//TODO : Write response of author on comments in responses function in Comments.js file
-
 class App extends Component {
   findElement = (elementId) => {
-    let comments = this.props.comments
-    let index = comments.findIndex(comment => comment.elementId === elementId)
-    return comments[index]
+    let elements = this.props.elements
+    let index = elements.findIndex(element => element.elementId === elementId)
+    if(elements[index].comments.length){
+      return true
+    }
+    return false
   }
 
   render() {
     return (
       <div className="App" /*style={{filter:this.state.commentPopup ? "blur(5px)" :""}}*/>
-        <SideBar display={this.props.sidebar} comments={this.props.comments} dispatch={this.props.dispatch}/>
-        <CommentPopup display={this.props.commentPopup} elementInfo={this.props.tempSelectedElementId} />
-        <button type="button" style={{ display: "inline", float: "left" }} onClick={() => { this.props.dispatch({type:"SHOW_SIDEBAR"}) }}>
-        ☰ 
-        </button>
-        <div className="App-header" style={{filter:this.props.commentPopup ? "blur(20px)" :""}}>
-          <TextArea elementName="TextArea" elementId='textarea0' flagStatus={this.findElement("textarea0").status}/>
+        <div className="">
+          <SideBar tempSelectedElementId={this.props.tempSelectedElementId} 
+            display={this.props.sidebar} 
+            dispatch={this.props.dispatch}
+            filteredComments={this.props.filteredComments}/>
+        </div>
+        <CommentPopup display={this.props.commentPopup} elementId={this.props.tempSelectedElementId} />
+        <div className="App-header">
+          <TextArea elementName="TextArea" elementId='textarea0' flagStatus={this.findElement("textarea0")} dispatch={this.props.dispatch}/>
           <br />
-          <TextArea elementName="TextArea" elementId='textarea1' flagStatus={this.findElement("textarea1").status}/>
+          <TextArea elementName="TextArea" elementId='textarea1' flagStatus={this.findElement("textarea1")} dispatch={this.props.dispatch}/>
           <br />
-          <TextArea elementName="TextArea" elementId='textarea2' flagStatus={this.findElement("textarea2").status}/>
+          <TextArea elementName="TextArea" elementId='textarea2' flagStatus={this.findElement("textarea2")} dispatch={this.props.dispatch}/>
           <br />
-          <TextArea elementName="TextArea" elementId='textarea3' flagStatus={this.findElement("textarea2").status}/>
+          <TextArea elementName="TextArea" elementId='textarea3' flagStatus={this.findElement("textarea3")} dispatch={this.props.dispatch}/>
           <br />
-          <TextArea elementName="TextArea" elementId='textarea4' flagStatus={this.findElement("textarea2").status}/>
+          <TextArea elementName="TextArea" elementId='textarea4' flagStatus={this.findElement("textarea4")} dispatch={this.props.dispatch}/>
           <br />
         </div>
       </div>
