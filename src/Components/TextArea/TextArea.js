@@ -32,10 +32,16 @@ export default class TextArea extends Component {
                 return null
         }
     }
+    onFocus = (e) => {
+        this.props.dispatch({
+            type:"FOCUS_ACTION",
+            data: this.props.elementId
+        })
+    }
     render() {
         return (
             <div className='element'>
-                <textarea value={this.state.textarea} onChange={this.onChange} rows="5" cols="100" placeholder="Enter Text Here" />
+                <textarea onFocus={this.onFocus} value={this.state.textarea} onChange={this.onChange} rows="5" cols="100" placeholder="Enter Text Here" />
                 <div className='elements-right-sidebar'>
                     <CommentButton onClick={this.onClick} />
                     <Flag status={this.props.flagStatus} onClick={this.onClick} />

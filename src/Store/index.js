@@ -3,7 +3,7 @@ import { createStore } from 'redux'
 var defaultStore = {
     sidebar: false,
     commentPopup: false,
-    tempSelectedElementId: "textarea0",
+    tempSelectedElementId: null,
     filteredComments: [],
     elements: [{
         elementId: "textarea0",
@@ -49,6 +49,26 @@ function comment(state = defaultStore, action) {
                 tempSelectedElementId: action.data,
                 commentPopup: !state.commentPopup
             }
+        case "CLEAR_COMMENTS":
+            let tempState
+            if (state.sidebar === true) {
+                tempState = {
+                    ...state,
+                    filteredComments: [],
+                    sidebar:false
+                }
+            } else {
+                tempState = {
+                    ...state,
+                    sidebar:false
+                }
+            }
+            return tempState
+        case "SIDEBAR":
+            return {
+                ...state,
+                sidebar: !state.sidebar
+            }
         case "SHOW_SIDEBAR":
             filteredComments = []
             index = elements.findIndex((element) => (element.elementId === action.data))
@@ -63,6 +83,20 @@ function comment(state = defaultStore, action) {
                 filteredComments: filteredComments,
                 tempSelectedElementId: action.data,
                 sidebar: !state.sidebar
+            }
+        case "FOCUS_ACTION":
+            filteredComments = []
+            index = elements.findIndex((element) => (element.elementId === action.data))
+            if (index !== -1) {
+                elements[index].comments.map((comment) => {
+                    filteredComments.push(comment)
+                    return null
+                })
+            }
+            return {
+                ...state,
+                filteredComments: filteredComments,
+                tempSelectedElementId: action.data,
             }
         case "SAVE_Comment":
             index = elements.findIndex((element) => (element.elementId === action.data.elementId))

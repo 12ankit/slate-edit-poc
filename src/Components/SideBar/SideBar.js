@@ -47,7 +47,13 @@ export default class SideBar extends Component {
             default:
                 return null
         }
-
+    }
+    onClick = () =>{
+        if(this.props.display === false && this.props.filteredComments[0] !== undefined){
+            this.props.dispatch({ type: "SIDEBAR" })
+        }else{
+            this.props.dispatch({type:"CLEAR_COMMENTS"})
+        }
     }
     render() {
         return (
@@ -85,7 +91,7 @@ export default class SideBar extends Component {
                         dispatch={this.props.dispatch}
                         filteredComments={this.props.filteredComments} />
                 </aside>
-                <button type="button" style={{ display: "inline-block", float: "right" }} onClick={() => { this.props.dispatch({ type: "SHOW_SIDEBAR" }) }}>
+                <button type="button" style={{background:this.props.filteredComments[0] === undefined ? "darkgray":"#0ca4eb", display: "inline-block", float: "right" }} onClick={this.onClick}>
                     ☰
             </button>
             </div>

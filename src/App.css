@@ -44,6 +44,7 @@ textarea{
   transform: translateY(2px);
   width: 20px;
   height: 20px;
+  cursor: pointer;
 }
 .element-icon {
   transform: translateY(-8px)
@@ -61,7 +62,8 @@ textarea{
   height: 20px;
   background-color: #0ca4eb;
   border: 0px;
-  color: aliceblue
+  color: aliceblue;
+  cursor: pointer;
 }
 .comment-button img{
   transform: translateY(-3px);
