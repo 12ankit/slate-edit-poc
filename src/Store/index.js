@@ -1,104 +1,63 @@
 import { createStore } from 'redux'
+import { getElements, showHideSideBar, commentAction } from './HelperFunctions.js'
 
-var defaultStore = {
-    sidebar: false,
-    commentPopup: false,
-    tempSelectedElementId: null,
-    filteredComments: [],
-    elements: [{
-        elementId: "textarea0",
-        elementName: "",
-        comments: [],
-    },
-    {
-        elementId: "textarea1",
-        elementName: "",
-        comments: []
-    },
-    {
-        elementId: "textarea2",
-        elementName: "",
-        comments: []
-    },
-    {
-        elementId: "textarea3",
-        elementName: "",
-        comments: []
-    },
-    {
-        elementId: "textarea4",
-        elementName: "",
-        comments: []
+var defaultStore ={
+    "sidebar": false,
+    "commentPopup": false,
+    "tempSelectedElementId": null,
+    "filteredComments": [],
+    "elements": [{
+        "elementId": "textarea0",
+        "elementName": "textarea",
+        "comments": []
     }]
 }
 
+var store = createStore(comment)
+
 function comment(state = defaultStore, action) {
-    let elements = []
+    let tempSelectedElementId = null
     let filteredComments = []
-    for (let i = 0; i < state.filteredComments.length; i++) {
-        filteredComments[i] = state.filteredComments[i]
-    }
-    for (let i = 0; i < state.elements.length; i++) {
-        elements[i] = state.elements[i]
-    }
-    let index, comments
+    let index, comments, elements, result, elementToAdd
     switch (action.type) {
-        case "SHOW_ADD_COMMENT_BOX":
+        case "SHOW_HIDE_ADD_COMMENT_BOX":
             return {
                 ...state,
                 tempSelectedElementId: action.data,
                 commentPopup: !state.commentPopup
             }
-        case "CLEAR_COMMENTS":
-            let tempState
-            if (state.sidebar === true) {
-                tempState = {
-                    ...state,
-                    filteredComments: [],
-                    sidebar:false
-                }
-            } else {
-                tempState = {
-                    ...state,
-                    sidebar:false
-                }
-            }
-            return tempState
-        case "SIDEBAR":
+        case "CLEAR_SIDEBAR_COMMENTS":
             return {
                 ...state,
-                sidebar: !state.sidebar
+                filteredComments: [],
+                sidebar: false
             }
-        case "SHOW_SIDEBAR":
-            filteredComments = []
-            index = elements.findIndex((element) => (element.elementId === action.data))
-            if (index !== -1) {
-                elements[index].comments.map((comment) => {
-                    filteredComments.push(comment)
-                    return null
-                })
+
+        case "SHOW_HIDE_SIDEBAR":
+            if (!state.sidebar && state.tempSelectedElementId !== null) {
+                action.data = state.tempSelectedElementId
+                result = showHideSideBar(state, action)
+                filteredComments = result.filteredComments
+                tempSelectedElementId = result.tempSelectedElementId
             }
             return {
                 ...state,
                 filteredComments: filteredComments,
-                tempSelectedElementId: action.data,
+                tempSelectedElementId: tempSelectedElementId,
                 sidebar: !state.sidebar
             }
+
         case "FOCUS_ACTION":
-            filteredComments = []
-            index = elements.findIndex((element) => (element.elementId === action.data))
-            if (index !== -1) {
-                elements[index].comments.map((comment) => {
-                    filteredComments.push(comment)
-                    return null
-                })
-            }
+            result = showHideSideBar(state, action)
+            filteredComments = result.filteredComments
+            tempSelectedElementId = result.tempSelectedElementId
             return {
                 ...state,
                 filteredComments: filteredComments,
-                tempSelectedElementId: action.data,
+                tempSelectedElementId: action.data
             }
         case "SAVE_Comment":
+            elements = getElements(state)
             index = elements.findIndex((element) => (element.elementId === action.data.elementId))
             elements[index].comments.push({
                 commentId: "comment#" + elements[index].comments.length,
@@ -114,33 +73,60 @@ function comment(state = defaultStore, action) {
                 commentPopup: !state.commentPopup,
                 sidebar: false
             }
-        case "CANCEL_COMMENT":
+
+        case "ACTION_ON_COMMENT":
+            result = commentAction(state, action)
+            elements = result.elements
+            filteredComments = result.filteredComments
             return {
                 ...state,
-                commentPopup: !state.commentPopup
+                elements: elements,
+                filteredComments: filteredComments
             }
-        case "ACTION_ON_COMMENT":
-            return commentAction(state, action, elements, filteredComments)
+
         case "FILTER_BY_STATUS":
+            elements = getElements(state)
             filteredComments = []
             index = elements.findIndex((element) => (element.elementId === action.data.elementId))
             comments = elements[index].comments
             if (action.data.status === "ALL") {
-                comments.map((comment) => {
-                    filteredComments.push(comment)
-                    return null
-                })
+                for (let n in comments) {
+                    filteredComments.push(comments[n])
+                }
             } else {
-                comments.map((comment) => {
+                for (let n in comments) {
                     if (comment.status === action.data.status) {
-                        filteredComments.push(comment)
+                        filteredComments.push(comments[n])
                     }
-                    return null
-                })
+                }
             }
             return {
                 ...state,
                 filteredComments: filteredComments,
+            }
+        case "ADD_ELEMENT":
+            elements = getElements(state)
+            index = elements.findIndex((element) => (element.elementId === action.data.elementId))
+            elementToAdd = {
+                elementId: action.data.elementToAdd + (elements.length + 1),
+                elementName: action.data.elementToAdd,
+                comments: [],
+            }
+            elements.splice(index, 0, elementToAdd)
+            return {
+                ...state,
+                elements: elements
+            }
+        case "REMOVE_ELEMENTS":
+            elements = getElements(state)
+            if (elements.length !== 1) {
+                index = elements.findIndex((element) => (element.elementId === action.data.elementId)) + 1
+                elements.splice(index, 1)
+            }
+            return {
+                ...state,
+                elements: elements,
+                filteredComments: []
             }
         default:
             return {
@@ -149,79 +135,6 @@ function comment(state = defaultStore, action) {
     }
 }
 
-function commentAction(state, action, elements, filteredComments) {
-    let fileteredIndex = filteredComments.findIndex((comment) => (comment.commentId === action.data.commentId))
-    let index = elements.findIndex((element) => (element.elementId === action.data.elementId))
-    let comments = elements[index].comments
-    let commentIndex = comments.findIndex((comment) => (comment.commentId === action.data.commentId))
-    switch (action.data.responseAction) {
-        case "REPLYED":
-            comments[commentIndex].responseAction = "ACTION"
-            comments[commentIndex].replys.push(action.data.text)
-            return {
-                ...state,
-                elements: elements,
-                filteredComments: filteredComments
-            }
-        case "EDITED":
-            comments[commentIndex].text = action.data.text
-            comments[commentIndex].status = "OPEN"
-            comments[commentIndex].responseAction = "ACTION"
-            return {
-                ...state,
-                elements: elements,
-                filteredComments: filteredComments
-            }
-        case "CANCELED":
-            comments[commentIndex].responseAction = "ACTION"
-            return {
-                ...state,
-                elements: elements,
-                filteredComments: filteredComments
-            }
 
-        case "REPLY":
-            comments[commentIndex].responseAction = "REPLY"
-            // comments[commentIndex].replys.push(action.data.text)
-            return {
-                ...state,
-                elements: elements,
-                filteredComments: filteredComments
-            }
-        case "EDIT":
-            // comments[commentIndex].text = action.data.text
-            // comments[commentIndex].status = "OPEN"
-            comments[commentIndex].responseAction = "EDIT"
-            return {
-                ...state,
-                elements: elements,
-                filteredComments: filteredComments
-            }
-        case "RESOLVE":
-            comments[commentIndex].status = "RESOLVED"
-            comments[commentIndex].responseAction = "ACTION"
-            filteredComments[fileteredIndex].status = "RESOLVED"
-            return {
-                ...state,
-                elements: elements,
-                filteredComments: filteredComments
-            }
-        case "DELETE":
-            comments.splice(commentIndex, 1)
-            filteredComments.splice(fileteredIndex, 1)
-            return {
-                ...state,
-                elements: elements,
-                filteredComments: filteredComments
-            }
-        default:
-            return {
-                ...state,
-                elements: elements,
-                filteredComments: filteredComments
-            }
-    }
 
-}
-
-export default createStore(comment)
+export default store

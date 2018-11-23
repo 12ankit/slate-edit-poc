@@ -1,6 +1,8 @@
 import React, { Component } from "react"
 import Flag from './Flag.js'
 import CommentButton from './CommentButton.js'
+import AddElement from "../AddElement.js";
+import RemoveElement from "../RemoveElements.js"
 
 export default class TextArea extends Component {
     constructor(props) {
@@ -17,14 +19,14 @@ export default class TextArea extends Component {
             case "BUTTON":
                 this.props.dispatch(
                     {
-                        type: "SHOW_ADD_COMMENT_BOX",
+                        type: "SHOW_HIDE_ADD_COMMENT_BOX",
                         data: this.props.elementId
                     })
                 break
             case "FLAG":
                 this.props.dispatch(
                     {
-                        type: "SHOW_SIDEBAR",
+                        type: "SHOW_HIDE_SIDEBAR",
                         data: this.props.elementId
                     })
                 break
@@ -42,10 +44,12 @@ export default class TextArea extends Component {
         return (
             <div className='element'>
                 <textarea onFocus={this.onFocus} value={this.state.textarea} onChange={this.onChange} rows="5" cols="100" placeholder="Enter Text Here" />
-                <div className='elements-right-sidebar'>
-                    <CommentButton onClick={this.onClick} />
+                <div className='elements-right-sidebar' onMouseEnter={()=>{this.setState({addOptions :true})}} >
+                    <RemoveElement elementId={this.props.elementId}/>
+                    <CommentButton onClick={this.onClick} onMouseLeave={()=>{this.setState({addOptions:false})}}/>
                     <Flag status={this.props.flagStatus} onClick={this.onClick} />
                 </div>
+                <AddElement elementId={this.props.elementId}/>
             </div>
         )
     }

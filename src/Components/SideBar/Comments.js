@@ -65,7 +65,7 @@ class Comments extends Component {
                             <p className="date"><span style={{ fontWeight: "bold", fontSize: "14px" }}>c5c5</span><br />{comment.timeSign.toString()}</p>
                             <div className="sidebar-comment-buttons">
                                 <select className="comment-select" id={comment.commentId} value={this.state.select} onChange={this.onChange}>
-                                    <option value="ACTION">Action</option>
+                                    <option className="hide" value="ACTION"></option>
                                     <option value="REPLY">Reply</option>
                                     <option value="RESOLVE">Resolve</option>
                                     <option value="EDIT">Edit</option>

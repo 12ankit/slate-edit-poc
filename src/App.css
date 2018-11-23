@@ -38,6 +38,7 @@ textarea{
 }
 .elements-right-sidebar {
   float: right;
+  transform: translateY(-25px);
 }
 
 .flag {
@@ -45,6 +46,7 @@ textarea{
   width: 20px;
   height: 20px;
   cursor: pointer;
+  margin: 0;
 }
 .element-icon {
   transform: translateY(-8px)
@@ -55,6 +57,7 @@ textarea{
   position: "fixed";
   padding:"10px";
   margin: 50%;
+  z-index: 1;
 }
 .comment-button{
   transform: translateY(-6px);
@@ -68,20 +71,18 @@ textarea{
 .comment-button img{
   transform: translateY(-3px);
   filter: invert(100%)
-}
-.sidebar{
+} 
+.sidebar aside {
+  overflow: scroll;
+  width: 20%;
   position: fixed;
-  float: left;
   z-index: 1;
   -webkit-transition: width 1s ease-in-out;
   animation: ease-in-out 1s ease;
   transition:  0s, opacity 0.5s linear;
-}
-.sidebar aside{
-  display: inline-block;
-  width: 94.3%;
-  height: 800px;
   background-color: whitesmoke;
+  height: 800px;
+  padding-left: 1.4%;
 }
 button {
   border: 0px;
@@ -183,4 +184,49 @@ button {
 .example-leave.example-leave-active {
   opacity: 0.01;
   transition: opacity 300ms ease-in;
+}
+.addElements{
+  display: block;
+  width: 20px;
+  height: 20px;
+  margin-bottom: 20px;
+}
+.addElements:hover{
+  visibility: show;
+}
+.addElements ul{
+  background: gray;
+  font-size: 16px;
+  list-style-type:none;
+  margin:20px 0 0 0;
+  padding: 0;
+  position: absolute;
+}
+.addElements ul li{
+  padding: 0px 20px
+}
+.addElements ul li:hover{
+  background: darkgray;
+  cursor: pointer;
+}
+.addElements img {
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  position: absolute;
+}
+.hide{
+  display: none;  
+}
+.visibility{
+  visibility: hidden;
+}
+.removeElement{
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+.removeElement img{
+  transform: translate(-7px);
 }

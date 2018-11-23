@@ -23,7 +23,7 @@ class CommentPopup extends Component {
                 })
             this.setState({ comment: "" })
         } else {
-            this.props.dispatch({ type: "CANCEL_COMMENT" })
+            this.props.dispatch({ type: "SHOW_HIDE_ADD_COMMENT_BOX" , data : null })
         }
     }
     render() {
