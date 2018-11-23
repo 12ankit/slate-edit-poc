@@ -42,6 +42,7 @@ class App extends Component {
 
 export default connect(function (state, ownProps) {
   return {
-    ...state
+    ...state.comment,
+    ...state.popup
   }
 })(App);
