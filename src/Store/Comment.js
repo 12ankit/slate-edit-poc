@@ -88,7 +88,7 @@ function comment(state = defaultStore, action) {
                 }
             } else {
                 for (let n in comments) {
-                    if (comment.status === action.data.status) {
+                    if (comments[n].status === action.data.status) {
                         filteredComments.push(comments[n])
                     }
                 }
